@@ -23,7 +23,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: space-evenly;
-  width: 100%;
+  width: 80%;
   height: 100%;
   max-width: 1200px;
   max-height: 1200px;
@@ -52,4 +52,25 @@ header > p {
   height: 5%;
   font-size: 1.56rem;
   font-weight: bold;
+}
+
+.dice-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  width: 100%;
+  max-width: 800px;
+  justify-items: center;
+  align-items: center;
+  gap: 1rem;
+  padding: 0;
+}
+
+.dice-element {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 6.25rem;
+  border: 1px solid black;
+  width: 100%;
+  aspect-ratio: 1 / 1;
 }
