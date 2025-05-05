@@ -10,6 +10,7 @@ function renderDice() {
   for (let i = 0; i < 10; i++) {
     const randomValue = Math.ceil(Math.random() * 10);
     const diceEl = document.createElement("div");
+    diceEl.id = `die-${i}`;
     diceEl.classList.add("dice-element");
     diceEl.dataset.value = randomValue;
     diceEl.dataset.isHeld = "false";
