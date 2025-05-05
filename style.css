@@ -73,4 +73,10 @@ header > p {
   border: 1px solid black;
   width: 100%;
   aspect-ratio: 1 / 1;
+  cursor: pointer;
+  user-select: none;
+}
+
+.held-dice {
+  background-color: #8bd691;
 }
