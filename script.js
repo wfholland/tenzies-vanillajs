@@ -41,11 +41,10 @@ function handleHeldDie(event) {
   const dieValue = die.dataset.value;
   const dieID = die.dataset.id;
 
-  manageDiceArray(dieID, dieValue);
+  const isHeld = getHeldDie(dieID);
+  manageDiceArray(dieID, dieValue, isHeld);
 
-  const heldDie = getHeldDie(dieID);
-  die.classList.toggle("held-dice", !heldDie);
-  console.log("hello");
+  die.classList.toggle("held-dice", !isHeld);
 }
 
 function handleDiceContainerClick(event) {
@@ -54,13 +53,20 @@ function handleDiceContainerClick(event) {
   }
 }
 
-function manageDiceArray(id, value) {
-  const heldDie = getHeldDie(id);
-
-  !heldDie
-    ? heldDiceList.push({ id, value })
-    : (heldDiceList = heldDiceList.filter((die) => die.id !== id));
+function manageDiceArray(id, value, isCurrentlyHeld) {
+  if (isCurrentlyHeld) {
+    heldDiceList = heldDiceList.filter((die) => die.id !== id);
+  } else {
+    heldDiceList.push({ id, value });
+  }
 }
+
+/// new
+// function checkWinCondition() {
+//   heldDiceList.every((die) => die.value === heldDiceList[0].value)
+//     ? console.log("win")
+//     : console.log("lose");
+// }
 
 diceContainer.addEventListener("click", handleDiceContainerClick);
 rollButton.addEventListener("click", renderDice);
