@@ -1,10 +1,8 @@
 const diceContainer = document.querySelector(".dice-container");
 const rollButton = document.querySelector("#roll-button");
 
-// Array to track state of held die
-let heldDiceList = [];
+const heldDiceList = [];
 
-// renders 10 dice to the game board
 function renderDice() {
   clearDiceContainer();
 
@@ -14,12 +12,10 @@ function renderDice() {
   }
 }
 
-// clear dice from DOM
 function clearDiceContainer() {
   diceContainer.innerHTML = "";
 }
 
-// create new die
 function createDieElement(index) {
   const dieID = index.toString();
   const heldDie = getHeldDie(dieID);
@@ -36,22 +32,21 @@ function createDieElement(index) {
   return dieElement;
 }
 
-// returns held die with a given id
-function getHeldDie(dieID) {
+function getHeldDie(id) {
   return heldDiceList.find((die) => die.id === dieID);
 }
 
-// die click handler logic
 function handleHeldDie(event) {
   const die = event.target;
   const dieValue = die.dataset.value;
   const dieID = die.dataset.id;
+
   manageDiceArray(dieID, dieValue);
+
   const heldDie = getHeldDie(dieID);
   die.classList.toggle("held-dice", !heldDie);
 }
 
-// delegates click handling for dice to their container
 function handleDiceContainerClick(event) {
   if (event.target.classList.contains("dice-element")) {
     handleHeldDie(event);
@@ -59,11 +54,11 @@ function handleDiceContainerClick(event) {
 }
 
 function manageDiceArray(id, value) {
-  const filteredDice = heldDiceList.filter((die) => die.id !== id);
   const heldDie = getHeldDie(id);
+
   !heldDie
-    ? heldDiceList.push({ id: id, value: value })
-    : (heldDiceList = filteredDice);
+    ? (heldDiceList = [...heldDiceList, { id, value }])
+    : (heldDiceList = heldDiceList.filter((die) => die.id !== id));
 }
 
 diceContainer.addEventListener("click", handleDiceContainerClick);
