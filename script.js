@@ -51,6 +51,9 @@ function handleDiceContainerClick(event) {
   if (event.target.classList.contains("dice-element")) {
     handleHeldDie(event);
   }
+  if (heldDiceList.length === 10) {
+    checkWinCondition();
+  }
 }
 
 function manageDiceArray(id, value, isCurrentlyHeld) {
@@ -61,12 +64,17 @@ function manageDiceArray(id, value, isCurrentlyHeld) {
   }
 }
 
-/// new
-// function checkWinCondition() {
-//   heldDiceList.every((die) => die.value === heldDiceList[0].value)
-//     ? console.log("win")
-//     : console.log("lose");
-// }
+/// check win condition
+function checkWinCondition() {
+  heldDiceList.every((die) => die.value === heldDiceList[0].value)
+    ? handleWinningGame()
+    : console.log("lose");
+}
+
+// handleWinningGame
+function handleWinningGame() {
+  diceContainer.removeEventListener("click", handleDiceContainerClick);
+}
 
 diceContainer.addEventListener("click", handleDiceContainerClick);
 rollButton.addEventListener("click", renderDice);
