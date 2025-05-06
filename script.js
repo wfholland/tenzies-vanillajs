@@ -22,24 +22,18 @@ function clearDiceContainer() {
 // create new die
 function createDieElement(index) {
   const dieID = index.toString();
-  const isDieHeld = isDieCurrentlyHeld(dieID);
+  const heldDie = getHeldDie(dieID);
   const randomDieValue = Math.ceil(Math.random() * 10);
-  const currentHeldDie = getHeldDie(dieID);
-  const dieValue = isDieHeld ? currentHeldDie.value : randomDieValue;
+  const dieValue = heldDie ? heldDie.value : randomDieValue;
 
   const dieElement = document.createElement("div");
   dieElement.dataset.id = dieID;
   dieElement.dataset.value = dieValue;
   dieElement.textContent = dieValue;
   dieElement.classList.add("dice-element");
-  if (isDieHeld) dieElement.classList.add("held-dice");
+  if (heldDie) dieElement.classList.add("held-dice");
 
   return dieElement;
-}
-
-// check if the die with a given id is currently held
-function isDieCurrentlyHeld(dieID) {
-  return heldDiceList.some((die) => die.id === dieID);
 }
 
 // returns held die with a given id
@@ -53,8 +47,8 @@ function handleHeldDie(event) {
   const dieValue = die.dataset.value;
   const dieID = die.dataset.id;
   manageDiceArray(dieID, dieValue);
-  const isDieHeld = isDieCurrentlyHeld(dieID);
-  die.classList.toggle("held-dice", isDieHeld);
+  const heldDie = getHeldDie(dieID);
+  die.classList.toggle("held-dice", !heldDie);
 }
 
 // delegates click handling for dice to their container
@@ -66,8 +60,8 @@ function handleDiceContainerClick(event) {
 
 function manageDiceArray(id, value) {
   const filteredDice = heldDiceList.filter((die) => die.id !== id);
-  const isDieHeld = isDieCurrentlyHeld(id);
-  !isDieHeld
+  const heldDie = getHeldDie(id);
+  !heldDie
     ? heldDiceList.push({ id: id, value: value })
     : (heldDiceList = filteredDice);
 }
