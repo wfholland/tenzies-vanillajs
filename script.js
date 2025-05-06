@@ -33,10 +33,9 @@ function handleHeldDie(event) {
   const die = event.target;
   const dieValue = die.dataset.value;
   const dieID = die.dataset.id;
-  const dieDiv = document.querySelector(`[data-id="${dieID}"]`);
   manageDiceArray(dieID, dieValue);
   const isHeld = heldDice.some((die) => die.id === dieID);
-  dieDiv.classList.toggle("held-dice", isHeld);
+  die.classList.toggle("held-dice", isHeld);
 }
 
 function manageDiceArray(id, value) {
