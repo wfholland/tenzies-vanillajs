@@ -1,7 +1,7 @@
 const diceContainer = document.querySelector(".dice-container");
 const rollButton = document.querySelector("#roll-button");
 
-const heldDiceList = [];
+let heldDiceList = [];
 
 function renderDice() {
   clearDiceContainer();
@@ -32,7 +32,7 @@ function createDieElement(index) {
   return dieElement;
 }
 
-function getHeldDie(id) {
+function getHeldDie(dieID) {
   return heldDiceList.find((die) => die.id === dieID);
 }
 
@@ -45,6 +45,7 @@ function handleHeldDie(event) {
 
   const heldDie = getHeldDie(dieID);
   die.classList.toggle("held-dice", !heldDie);
+  console.log("hello");
 }
 
 function handleDiceContainerClick(event) {
@@ -57,7 +58,7 @@ function manageDiceArray(id, value) {
   const heldDie = getHeldDie(id);
 
   !heldDie
-    ? (heldDiceList = [...heldDiceList, { id, value }])
+    ? heldDiceList.push({ id, value })
     : (heldDiceList = heldDiceList.filter((die) => die.id !== id));
 }
 
