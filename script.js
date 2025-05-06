@@ -6,30 +6,80 @@ let heldDiceList = [];
 
 // dynamically create 10 new dice
 
+// function renderDice() {
+//   diceContainer.innerHTML = "";
+
+//   for (let i = 0; i < 10; i++) {
+//     const isDieHeld = heldDiceList.some((die) => die.id === i.toString());
+//     const randomDieValue = Math.ceil(Math.random() * 10);
+//     const dieElement = document.createElement("div");
+//     const currentHeldDie = heldDiceList.find((die) => die.id === i.toString());
+//     const dieValue = isDieHeld ? currentHeldDie.value : randomDieValue;
+//     dieElement.dataset.id = i.toString();
+//     dieElement.classList.add("dice-element");
+//     if (isDieHeld) dieElement.classList.add("held-dice");
+//     dieElement.dataset.value = dieValue;
+//     dieElement.textContent = dieValue;
+//     diceContainer.appendChild(dieElement);
+//   }
+//   const allDiceElements = document.querySelectorAll(".dice-element");
+//   allDiceElements.forEach((die) =>
+//     die.addEventListener("click", handleHeldDie)
+//   );
+// }
+
+// separate renderDice logic
+
 function renderDice() {
-  diceContainer.innerHTML = "";
+  clearDiceContainer();
 
   for (let i = 0; i < 10; i++) {
-    const isDieHeld = heldDiceList.some((die) => die.id === i.toString());
-    const randomDieValue = Math.ceil(Math.random() * 10);
-    const dieElement = document.createElement("div");
-    const currentHeldDie = heldDiceList.find((die) => die.id === i.toString());
-    const dieValue = isDieHeld ? currentHeldDie.value : randomDieValue;
-    dieElement.dataset.id = i.toString();
-    dieElement.classList.add("dice-element");
-    if (isDieHeld) dieElement.classList.add("held-dice");
-    dieElement.dataset.value = dieValue;
-    dieElement.textContent = dieValue;
+    const dieElement = createDieElement(i);
     diceContainer.appendChild(dieElement);
   }
+  attachDieClickHandlers();
+}
+
+// clear dice from DOM
+function clearDiceContainer() {
+  diceContainer.innerHTML = "";
+}
+
+// create new die
+function createDieElement(index) {
+  const dieID = index.toString();
+  const isDieHeld = isDieCurrentlyHeld(dieID);
+  const randomDieValue = Math.ceil(Math.random() * 10);
+  const currentHeldDie = getHeldDie(dieID);
+  const dieValue = isDieHeld ? currentHeldDie.value : randomDieValue;
+
+  const dieElement = document.createElement("div");
+  dieElement.dataset.id = dieID;
+  dieElement.dataset.value = dieValue;
+  dieElement.textContent = dieValue;
+  dieElement.classList.add("dice-element");
+  if (isDieHeld) dieElement.classList.add("held-dice");
+
+  return dieElement;
+}
+
+// check if the die with a given id is currently held
+function isDieCurrentlyHeld(dieID) {
+  return heldDiceList.some((die) => die.id === dieID);
+}
+
+// returns held die with a given id
+function getHeldDie(dieID) {
+  return heldDiceList.find((die) => die.id === dieID);
+}
+
+//  attaches click event handlers to all dice
+function attachDieClickHandlers() {
   const allDiceElements = document.querySelectorAll(".dice-element");
   allDiceElements.forEach((die) =>
     die.addEventListener("click", handleHeldDie)
   );
 }
-
-// Add click event listener to roll dice button
-rollButton.addEventListener("click", renderDice);
 
 // dice click handler logic
 function handleHeldDie(event) {
@@ -37,15 +87,17 @@ function handleHeldDie(event) {
   const dieValue = die.dataset.value;
   const dieID = die.dataset.id;
   manageDiceArray(dieID, dieValue);
-  const isDieHeld = heldDiceList.some((die) => die.id === dieID);
+  const isDieHeld = isDieCurrentlyHeld(dieID);
   die.classList.toggle("held-dice", isDieHeld);
 }
 
 function manageDiceArray(id, value) {
   const filteredDice = heldDiceList.filter((die) => die.id !== id);
-  const isDieHeld = heldDiceList.some((die) => die.id === id);
+  const isDieHeld = isDieCurrentlyHeld(id);
   !isDieHeld
     ? heldDiceList.push({ id: id, value: value })
     : (heldDiceList = filteredDice);
 }
+
+rollButton.addEventListener("click", renderDice);
 renderDice();
