@@ -4,26 +4,48 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Tenzies!</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&family=Rubik:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
     <main class="game-container">
-      <!-- Header for title and game description -->
       <header>
         <h1>Tenzies</h1>
-        <p>
-          Goal: Match all of the dice! Click on a die to hold it between rolls.
-        </p>
+        <p>Match all of the dice! Click on a die to hold it between rolls.</p>
       </header>
 
-      <!-- dice container -->
       <section class="dice-container">
         <!-- dice will be dynamically rendered here -->
       </section>
 
-      <!-- Roll button to trigger activation -->
       <button id="roll-button">Roll Dice</button>
     </main>
+
+    <!-- modal will be displayed once game is won -->
+    <div id="win-modal" class="modal-container">
+      <div class="modal">
+        <button id="close-modal-btn" class="close-button">&times;</button>
+
+        <div class="modal-header">
+          <h1 id="win-text">You won!</h1>
+        </div>
+
+        <div id="modal-content" class="modal-body">
+          <!-- This will be rendered by JS to display the players score (time) -->
+        </div>
+
+        <div class="modal-footer">
+          <button id="close-btn" class="btn btn-secondary">Close</button>
+          <button id="new-game-btn" class="btn btn-primary">New Game</button>
+        </div>
+      </div>
+    </div>
 
     <script src="script.js"></script>
   </body>
