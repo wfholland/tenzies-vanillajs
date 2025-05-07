@@ -1,5 +1,17 @@
 const diceContainer = document.querySelector(".dice-container");
 const rollButton = document.querySelector("#roll-button");
+const gameContainer = document.querySelector(".game-container");
+
+// timer variables
+let startTime;
+let timerInterval;
+let elapsedTime = 0;
+
+// create timer div and append to game container
+const timerDisplay = document.createElement("div");
+timerDisplay.className = "timer";
+timerDisplay.textContent = "Time: 0s";
+gameContainer.appendChild(timerDisplay);
 
 let heldDiceList = [];
 
@@ -76,6 +88,11 @@ function handleWinningGame() {
   diceContainer.removeEventListener("click", handleDiceContainerClick);
 }
 
+function startGame() {
+  renderDice();
+}
+
 diceContainer.addEventListener("click", handleDiceContainerClick);
 rollButton.addEventListener("click", renderDice);
-renderDice();
+
+startGame();
