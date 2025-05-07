@@ -2,18 +2,22 @@ const diceContainer = document.querySelector(".dice-container");
 const rollButton = document.querySelector("#roll-button");
 const gameContainer = document.querySelector(".game-container");
 
-// timer variables
 let startTime;
 let timerInterval;
 let elapsedTime = 0;
+let finalTime;
 
-// create timer div and append to game container
 const timerDisplay = document.createElement("div");
 timerDisplay.className = "timer";
 timerDisplay.textContent = "Time: 0s";
 gameContainer.appendChild(timerDisplay);
 
+let gameRunning = false;
 let heldDiceList = [];
+
+setInterval(() => {
+  rollButton.textContent = gameRunning ? "Roll Dice" : "Start Game";
+}, 100);
 
 function renderDice() {
   clearDiceContainer();
@@ -76,23 +80,49 @@ function manageDiceArray(id, value, isCurrentlyHeld) {
   }
 }
 
-/// check win condition
 function checkWinCondition() {
   heldDiceList.every((die) => die.value === heldDiceList[0].value)
     ? handleWinningGame()
     : console.log("lose");
 }
 
-// handleWinningGame
 function handleWinningGame() {
   diceContainer.removeEventListener("click", handleDiceContainerClick);
+  gameRunning = false;
 }
 
-function startGame() {
-  renderDice();
+function startTimer() {
+  startTime = Date.now();
+  timerInterval = setInterval(updateTimer, 100);
+}
+
+function updateTimer() {
+  if (gameRunning) {
+    elapsedTime = Date.now() - startTime;
+    const seconds = Math.floor(elapsedTime / 1000);
+    timerDisplay.textContent = `Timer: ${seconds}s`;
+  } else {
+    finalTime = Math.floor(elapsedTime / 1000);
+    timerDisplay.textContent = `Timer: ${finalTime}s`;
+    clearInterval(timerInterval);
+  }
+}
+
+function resetTimer() {
+  startTime = 0;
+  timerInterval = 0;
+  elapsedTime = 0;
+}
+
+function handleRollButton() {
+  if (gameRunning) {
+    renderDice();
+  } else {
+    gameRunning = true;
+    renderDice();
+    startTimer();
+  }
 }
 
 diceContainer.addEventListener("click", handleDiceContainerClick);
-rollButton.addEventListener("click", renderDice);
-
-startGame();
+rollButton.addEventListener("click", handleRollButton);
