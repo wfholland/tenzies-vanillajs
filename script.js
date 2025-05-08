@@ -3,6 +3,8 @@ const rollButton = document.querySelector("#roll-button");
 const gameContainer = document.querySelector(".game-container");
 const modalContent = document.querySelector("#modal-content");
 const modalContainer = document.querySelector(".modal-container");
+const closeModalButtons = document.querySelectorAll("#close-btn");
+const newGameButton = document.querySelector("#new-game-btn");
 
 let startTime;
 let timerInterval;
@@ -66,6 +68,10 @@ function handleHeldDie(event) {
 }
 
 function handleDiceContainerClick(event) {
+  if (!gameRunning) {
+    return;
+  }
+
   if (event.target.classList.contains("dice-element")) {
     handleHeldDie(event);
   }
@@ -120,6 +126,7 @@ function handleRollButton() {
     renderDice();
   } else {
     gameRunning = true;
+    resetGame();
     renderDice();
     startTimer();
   }
@@ -144,11 +151,29 @@ function updateModalContent(finalTime, bestTime) {
     </div>`;
   } else {
     modalContent.innerHTML = `<div>
-    <h2>Final time:${finalTime}s/h2>
-    <h2>Best time:${bestTime}s</h2>
+    <h2>Final time: ${finalTime}s</h2>
+    <h2>Best time: ${bestTime}s</h2>
     </div>`;
   }
 }
 
+function resetGame() {
+  modalContainer.style.display = "none";
+  clearDiceContainer();
+  heldDiceList = [];
+  startTime = 0;
+  timerInterval = 0;
+  elapsedTime = 0;
+  finalTime = 0;
+  timerDisplay.textContent = "Time: 0s";
+}
+
 diceContainer.addEventListener("click", handleDiceContainerClick);
 rollButton.addEventListener("click", handleRollButton);
+newGameButton.addEventListener("click", resetGame);
+
+closeModalButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    modalContainer.style.display = "none";
+  });
+});
