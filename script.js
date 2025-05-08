@@ -144,8 +144,8 @@ function updateModalContent(finalTime, bestTime) {
     </div>`;
   } else {
     modalContent.innerHTML = `<div>
-    <h2>Final time: ${finalTime}</h2>
-    <h2>Best time: ${bestTime}s</h2>
+    <h2>Final time:${finalTime}s/h2>
+    <h2>Best time:${bestTime}s</h2>
     </div>`;
   }
 }
