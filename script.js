@@ -1,6 +1,8 @@
 const diceContainer = document.querySelector(".dice-container");
 const rollButton = document.querySelector("#roll-button");
 const gameContainer = document.querySelector(".game-container");
+const modalContent = document.querySelector("#modal-content");
+const modalContainer = document.querySelector(".modal-container");
 
 let startTime;
 let timerInterval;
@@ -81,14 +83,19 @@ function manageDiceArray(id, value, isCurrentlyHeld) {
 }
 
 function checkWinCondition() {
-  heldDiceList.every((die) => die.value === heldDiceList[0].value)
-    ? handleWinningGame()
-    : console.log("lose");
+  const gameWon = heldDiceList.every(
+    (die) => die.value === heldDiceList[0].value
+  );
+  if (gameWon) {
+    handleWinningGame();
+  }
 }
 
 function handleWinningGame() {
-  diceContainer.removeEventListener("click", handleDiceContainerClick);
   gameRunning = false;
+  updateTimer();
+  saveBestTime();
+  modalContainer.style.display = "flex";
 }
 
 function startTimer() {
@@ -100,18 +107,12 @@ function updateTimer() {
   if (gameRunning) {
     elapsedTime = Date.now() - startTime;
     const seconds = Math.floor(elapsedTime / 1000);
-    timerDisplay.textContent = `Timer: ${seconds}s`;
+    timerDisplay.textContent = `Time: ${seconds}s`;
   } else {
     finalTime = Math.floor(elapsedTime / 1000);
-    timerDisplay.textContent = `Timer: ${finalTime}s`;
+    timerDisplay.textContent = `Time: ${finalTime}s`;
     clearInterval(timerInterval);
   }
-}
-
-function resetTimer() {
-  startTime = 0;
-  timerInterval = 0;
-  elapsedTime = 0;
 }
 
 function handleRollButton() {
@@ -121,6 +122,31 @@ function handleRollButton() {
     gameRunning = true;
     renderDice();
     startTimer();
+  }
+}
+
+function saveBestTime() {
+  const storedTime = localStorage.getItem("bestTime");
+  let bestTime = storedTime !== null ? Number(storedTime) : null;
+
+  if (bestTime === null || finalTime < bestTime) {
+    bestTime = finalTime;
+    localStorage.setItem("bestTime", bestTime);
+  }
+  updateModalContent(finalTime, bestTime);
+}
+
+function updateModalContent(finalTime, bestTime) {
+  if (bestTime === null || finalTime <= bestTime) {
+    modalContent.innerHTML = `<div>
+    <h1>New Best Time!</h1>
+    <h2>${finalTime}s</h2>
+    </div>`;
+  } else {
+    modalContent.innerHTML = `<div>
+    <h2>Final time: ${finalTime}</h2>
+    <h2>Best time: ${bestTime}s</h2>
+    </div>`;
   }
 }
 
