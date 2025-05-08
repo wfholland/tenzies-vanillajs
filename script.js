@@ -3,7 +3,7 @@ const rollButton = document.querySelector("#roll-button");
 const gameContainer = document.querySelector(".game-container");
 const modalContent = document.querySelector("#modal-content");
 const modalContainer = document.querySelector(".modal-container");
-const closeModalButtons = document.querySelectorAll("#close-btn");
+const closeModalButtons = document.querySelectorAll(".dismiss-modal");
 const newGameButton = document.querySelector("#new-game-btn");
 
 let startTime;
