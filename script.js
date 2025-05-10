@@ -18,6 +18,7 @@ gameContainer.appendChild(timerDisplay);
 
 let gameRunning = false;
 let heldDiceList = [];
+const MAX_DICE_VALUE = 6;
 
 setInterval(() => {
   rollButton.textContent = gameRunning ? "Roll Dice" : "Start Game";
@@ -39,7 +40,7 @@ function clearDiceContainer() {
 function createDieElement(index) {
   const dieID = index.toString();
   const heldDie = getHeldDie(dieID);
-  const randomDieValue = Math.ceil(Math.random() * 10);
+  const randomDieValue = Math.ceil(Math.random() * MAX_DICE_VALUE);
   const dieValue = heldDie ? heldDie.value : randomDieValue;
 
   const dieElement = document.createElement("div");
